@@ -6,11 +6,14 @@ import Chart from "./Chart";
 import Price from "./Price";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
+import Loading from "./Loading";
 
 const Container = styled.div`
   padding: 0px 20px; //위아래 좌우
   max-width: 480px;
   margin: 0 auto;
+  position: relative;
+  top: -15px;
 `;
 const Nav = styled.div`
   width: 100%;
@@ -21,12 +24,23 @@ const Nav = styled.div`
   a {
     margin-left: 20px;
     text-decoration: none;
-    color: white;
   }
+`;
+
+// styled(Link)``;를 해주면 Link의 모든 속성을 inherit하면서 새로운 속성을 더해줄 수 있다.
+const BackBtn = styled(Link)`
+  color: ${(props) => props.theme.textColor};
+  /* color: red; */
+  background-color: ${(props) => props.theme.coinBgColor};
+  padding: 5px 10px;
+  border-radius: 5px;
+  position: relative;
+  top: 50px;
 `;
 
 const Header = styled.header`
   height: 10vh;
+  margin-bottom: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -34,11 +48,6 @@ const Header = styled.header`
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
-`;
-
-const Loader = styled.span`
-  text-align: center;
-  display: block;
 `;
 
 const Overview = styled.div`
@@ -79,19 +88,9 @@ const Tab = styled.span<{ isActive: boolean }>`
   background-color: ${(props) => props.theme.coinBgColor};
   padding: 7px 0px;
   border-radius: 10px;
-  color: ${(props) =>
-    props.isActive ? props.theme.accentColor : props.theme.textColor};
-  a {
-    display: block;
-  }
-`;
-
-// styled(Link)``;를 해주면 Link의 모든 속성을 inherit하면서 새로운 속성을 더해줄 수 있다.
-const BackBtn = styled(Link)`
-  color: ${(props) => props.theme.textColor};
-  background-color: ${(props) => props.theme.coinBgColor};
-  padding: 5px 10px;
-  border-radius: 5px;
+  /* border-color: ${(props) =>
+    props.isActive ? "3px 3px 3px black;" : ""}; */
+  box-shadow: ${(props) => (props.isActive ? "1px 1px 2px 0.1px;" : "")};
 `;
 
 // interface
@@ -169,12 +168,13 @@ function Coin() {
     () => fetchCoinTickers(coinId) //argument가 필요하기 때문에 이러한 형태로 씀
   );
   const loading = infoLoading || tickersLoading;
-
+  // console.log(state.name);
   return (
     <Container>
       <Helmet>
         <title>
-          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+          {/* state는 넘겨 받아온 것!! Coins.tsx 에서 */}
+          {state?.name ? state.name : loading ? <Loading /> : infoData?.name}
         </title>
       </Helmet>
       <Nav>
@@ -182,11 +182,11 @@ function Coin() {
       </Nav>
       <Header>
         <Title>
-          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+          {state?.name ? state.name : loading ? <Loading /> : infoData?.name}
         </Title>
       </Header>
       {loading ? (
-        <Loader>Loading...</Loader>
+        <Loading />
       ) : (
         <>
           <Overview>

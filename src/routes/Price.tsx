@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
+import Loading from "./Loading";
 
 interface PriceProps {
   coinId: string;
@@ -31,7 +32,7 @@ function Price({ coinId }: PriceProps) {
   return (
     <div>
       {isLoading ? (
-        "Loading chart..."
+        <Loading />
       ) : (
         <ApexChart
           type="candlestick"

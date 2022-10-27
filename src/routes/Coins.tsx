@@ -3,11 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
+import Loading from "./Loading";
 
 const Container = styled.div`
   padding: 0px 20px; //위아래 좌우
   max-width: 480px;
   margin: 0 auto;
+  position: relative;
 `;
 
 const Header = styled.header`
@@ -44,10 +46,6 @@ const Title = styled.h1`
   color: ${(props) => props.theme.accentColor};
 `;
 
-const Loader = styled.span`
-  text-align: center;
-  display: block;
-`;
 const Img = styled.img`
   height: 35px;
   width: 35px;
@@ -69,25 +67,25 @@ function Coins() {
   return (
     <Container>
       <Helmet>
-        <title>코인</title>
+        <title>Coins</title>
       </Helmet>
       <Header>
-        <Title>코인</Title>
+        <Title>Coins</Title>
       </Header>
       {isLoading ? (
-        <Loader>Loading...</Loader>
+        <Loading></Loading>
       ) : (
         <CoinsList>
           {data?.slice(0, 100).map((coin) => (
             <Coin key={coin.id}>
               <Link
                 to={`/${coin.id}`}
-                state={{ name: coin.name, rank: coin.rank }}
+                state={{ name: coin.name, rank: coin.rank }} // data를 새 화면으로 넘겨줌
               >
                 <Img
                   src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
                 />
-                {coin.name} &rarr;
+                {coin.name}
               </Link>
             </Coin>
           ))}

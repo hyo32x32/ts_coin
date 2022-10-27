@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import Router from "./Router";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ThemeProvider } from "styled-components";
 import { DarkTheme, WhiteTheme } from "./theme";
@@ -71,21 +71,32 @@ a {
 `;
 
 const Btndiv = styled.div`
-  text-align: center;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  position: relative;
+  cursor: pointer;
 `;
 
-const Btn = styled.button`
-  color: #c6c6c6;
+const ModeBtn = styled.button`
+  color: ${(props) => props.theme.textColor};
   background-color: ${(props) => props.theme.coinBgColor};
   border: 1px solid;
+  border-color: ${(props) => props.theme.coinBgColor};
   margin-top: 15px;
   border-radius: 10px;
-  margin-left: 300px;
+  top: 30px;
+  /* left: auto; */
+  left: 310px;
+  right: 0;
+  margin: 0 auto;
+  position: absolute;
+  width: 20px;
   font-size: 18px;
   text-align: center;
-  line-height: 30px;
-  /* width: 30px; */
-  /* height: 30px; */
+  min-height: 30px;
+  min-width: 30px;
+  z-index: 99;
 `;
 
 function App() {
@@ -96,9 +107,9 @@ function App() {
       <ThemeProvider theme={themeMode ? DarkTheme : WhiteTheme}>
         <GlobalStyle />
         <Btndiv>
-          <Btn onClick={() => setThemeMode(!themeMode)}>
+          <ModeBtn onClick={() => setThemeMode(!themeMode)}>
             {themeMode ? "☀" : "☽"}
-          </Btn>
+          </ModeBtn>
         </Btndiv>
         <Router />
         <ReactQueryDevtools initialIsOpen={true} />

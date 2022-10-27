@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
+import Loading from "./Loading";
 
 interface ChartProps {
   coinId: string;
@@ -24,7 +25,7 @@ function Chart({ coinId }: ChartProps) {
   return (
     <div>
       {isLoading ? (
-        "Loading chart..."
+        <Loading />
       ) : (
         <ApexChart
           type="line"
@@ -57,9 +58,9 @@ function Chart({ coinId }: ChartProps) {
             xaxis: {
               axisBorder: { show: false },
               axisTicks: { show: false },
-              labels: { show: false },
+              labels: { show: false, datetimeFormatter: { month: "mmm 'yy" } },
               type: "datetime",
-              categories: data?.map((price) => price.time_close),
+              categories: data?.map((price) => Number(price.time_close) * 1000),
             },
             fill: {
               type: "gradient",
